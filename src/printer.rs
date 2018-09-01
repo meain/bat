@@ -197,23 +197,8 @@ impl<'a> Printer for InteractivePrinter<'a> {
             return Ok(());
         }
 
-        if self.config.output_components.grid() {
-            self.print_horizontal_line(handle, '┬')?;
-
-            write!(
-                handle,
-                "{}{}",
-                " ".repeat(self.panel_width),
-                self.colors
-                    .grid
-                    .paint(if self.panel_width > 0 { "│ " } else { "" }),
-            )?;
-        } else {
-            write!(handle, "{}", " ".repeat(self.panel_width))?;
-        }
-
         let (prefix, name) = match file {
-            InputFile::Ordinary(filename) => ("File: ", filename),
+            InputFile::Ordinary(filename) => ("", filename),
             _ => ("", "STDIN"),
         };
 
@@ -233,11 +218,7 @@ impl<'a> Printer for InteractivePrinter<'a> {
         )?;
 
         if self.config.output_components.grid() {
-            if self.content_type.is_text() {
-                self.print_horizontal_line(handle, '┼')?;
-            } else {
-                self.print_horizontal_line(handle, '┴')?;
-            }
+            self.print_horizontal_line(handle, '┬')?;
         }
 
         Ok(())
